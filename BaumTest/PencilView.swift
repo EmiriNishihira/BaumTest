@@ -169,7 +169,7 @@ struct ToolPalette: View {
         case .eraser:
             canvasView.tool = PKEraserTool(.bitmap, width: 5)
         }
-        print("a")
+
     }
     
     
