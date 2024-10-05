@@ -8,14 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isPresented = false
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        
+        ZStack {
+            Color.black
+            VStack {
+                Text("Baum Test")
+                    .foregroundStyle(.white)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                Button {
+                    isPresented = true
+                } label: {
+                    Text("Start")
+                        .foregroundStyle(.black)
+                        .frame(width: 200, height: 50)
+                        .background {
+                            Color.white
+                        }
+                        .cornerRadius(30)
+                }
+                .fullScreenCover(isPresented: $isPresented) {
+                    PencilView()
+                }
+            }
         }
-        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .edgesIgnoringSafeArea(.all)
+        
     }
 }
 
