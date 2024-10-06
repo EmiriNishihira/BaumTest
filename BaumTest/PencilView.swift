@@ -15,7 +15,7 @@ struct PencilView: View {
     @State private var savedImage: UIImage? = nil
     @State private var isPresented = false
     @State private var isFullyContained: Bool = false
-    @State private var sizeType: SheetSizeType = .small
+    @StateObject private var treeModel = TreeModel()
     
     enum ToolType {
         case pencil, eraser, paper
@@ -96,7 +96,7 @@ struct PencilView: View {
         .background(.black)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .fullScreenCover(isPresented: $isPresented) {
-            DiagnosisView(savedImage: $savedImage, isPresented: $isPresented, sizeType: $sizeType)
+            DiagnosisView(savedImage: $savedImage, isPresented: $isPresented, treeModel: treeModel)
         }
     }
     
@@ -123,29 +123,69 @@ struct PencilView: View {
         
         // 描画がビューにどのくらい収まっているかの割合を計算
         let ratio = (drawingBounds.width * drawingBounds.height) / (canvasWidth * canvasHeight)
-        
         // 横幅と高さの最小値を取って、収まっている割合を計算
-        checkSheetSize(ratio: ratio)
+        setUpSizeType(ratio: ratio)
+        
+        let drawX = drawingBounds.origin.x
+        let drawY = drawingBounds.origin.y
+        setUpPosition(x: drawX, y: drawY)
     }
     
-    func checkSheetSize(ratio: CGFloat) {
-        if ratio < 0.4 {
-            self.sizeType = .small
+    func setUpSizeType(ratio: CGFloat) {
+        if ratio < 0.2 {
+            treeModel.sizeType = .small
         } else {
             if ratio >= 0.8 {
-                self.sizeType = .large
+                treeModel.sizeType = .large
             } else if ratio <= 0.6 {
-                self.sizeType = .medium
+                treeModel.sizeType = .medium
             }
         }
     }
     
-}
-
-enum SheetSizeType {
-    case small
-    case medium
-    case large
+    func setUpPosition(x: CGFloat, y: CGFloat) {
+        let canvasWidth = canvasView.frame.width
+        let canvasHeight = canvasView.frame.height
+        
+        if treeModel.sizeType == .small {
+            if canvasWidth / 3 > x && canvasHeight / 3 > y {
+                treeModel.positionType = .topLeading
+            } else if canvasWidth / 3 > x && canvasHeight / 3 < y {
+                treeModel.positionType = .bottomLeading
+            } else if canvasWidth / 3 < x && canvasHeight / 3 > y {
+                treeModel.positionType = .topTrailing
+            } else if canvasWidth / 3 < x && canvasHeight / 3 < y {
+                treeModel.positionType = .bottomTrailing
+            }
+        } else {
+            let margins = calculateMargins()
+            if canvasHeight / 4 < margins.bottom {
+                treeModel.positionType = .top
+            } else if canvasHeight / 4 < margins.top {
+                treeModel.positionType = .bottom
+            } else if canvasWidth / 5 < margins.right {
+                treeModel.positionType = .leading
+            } else if canvasWidth / 5 < margins.left {
+                treeModel.positionType = .trailing
+            } else {
+                treeModel.positionType = .center
+            }
+            
+        }
+    }
+    
+    func calculateMargins() -> UIEdgeInsets {
+        let drawingBounds = canvasView.drawing.bounds
+        let canvasSize = canvasView.bounds.size
+        
+        let topMargin = drawingBounds.minY
+        let bottomMargin = canvasSize.height - drawingBounds.maxY
+        let leftMargin = drawingBounds.minX
+        let rightMargin = canvasSize.width - drawingBounds.maxX
+        
+        return UIEdgeInsets(top: topMargin, left: leftMargin, bottom: bottomMargin, right: rightMargin)
+    }
+    
 }
 
 // ツールパレットのビュー
@@ -231,7 +271,7 @@ struct ToolPalette: View {
 struct DiagnosisView: View {
     @Binding var savedImage: UIImage?
     @Binding var isPresented: Bool
-    @Binding var sizeType: SheetSizeType
+    @ObservedObject var treeModel:  TreeModel
     
     var body: some View {
         ZStack {
@@ -256,7 +296,8 @@ struct DiagnosisView: View {
                         .border(Color.black, width: 1)
                 }
                 
-                Text("用紙のタイプ\(sizeType)")
+                Text("用紙のサイズ\(treeModel.sizeType)")
+                Text("用紙の位置\(treeModel.positionType)")
 
             }
             .padding()
