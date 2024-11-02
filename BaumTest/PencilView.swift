@@ -141,6 +141,7 @@ struct PencilView: View {
                 treeModel.sizeType = .medium
             }
         }
+        print("収まり具合\(ratio)")
     }
     
     func setUpPosition(x: CGFloat, y: CGFloat) {
@@ -156,21 +157,63 @@ struct PencilView: View {
                 treeModel.positionType = .topTrailing
             } else if canvasWidth / 3 < x && canvasHeight / 3 < y {
                 treeModel.positionType = .bottomTrailing
-            }
-        } else {
-            let margins = calculateMargins()
-            if canvasHeight / 4 < margins.bottom {
-                treeModel.positionType = .top
-            } else if canvasHeight / 4 < margins.top {
-                treeModel.positionType = .bottom
-            } else if canvasWidth / 5 < margins.right {
-                treeModel.positionType = .leading
-            } else if canvasWidth / 5 < margins.left {
-                treeModel.positionType = .trailing
             } else {
                 treeModel.positionType = .center
             }
-            
+        } else if treeModel.sizeType == .medium {
+            let margins = calculateMargins()
+            let min = findMinInsets(margins: margins)
+            if min.value < 20 {
+                if min.key == "top" {
+                    if margins.bottom >= 100 {
+                        treeModel.positionType = .top
+                    }
+                    
+                } else if min.key == "bottom" {
+                    if margins.top >= 100 {
+                        treeModel.positionType = .bottom
+                    }
+                } else if min.key == "right" {
+                    if margins.top >= 200 {
+                        treeModel.positionType = .bottom
+                        return
+                    } else if margins.bottom >= 200 {
+                        treeModel.positionType = .top
+                        return
+                    }
+                    if margins.left >= 70 {
+                        treeModel.positionType = .trailing
+                        return
+                    }
+                    
+                } else if min.key == "left" {
+                    if margins.bottom >= 200 {
+                        treeModel.positionType = .top
+                        return
+                    } else if margins.top >= 200 {
+                        treeModel.positionType = .bottom
+                        return
+                    }
+                    if margins.right >= 70 {
+                        treeModel.positionType = .leading
+                    }
+                }
+            } else {
+                if margins.bottom >= 150 {
+                    treeModel.positionType = .top
+                } else if margins.top >= 150 {
+                    treeModel.positionType = .bottom
+                } else if margins.left >= 100 {
+                    treeModel.positionType = .trailing
+                } else if margins.right >= 100 {
+                    treeModel.positionType = .leading
+                } else {
+                    treeModel.positionType = .center
+                }
+            }
+            print("top:\(margins.top), bottom:\(margins.bottom), left:\(margins.left), right:\(margins.right)")
+        } else if treeModel.sizeType == .large {
+            treeModel.positionType = .center
         }
     }
     
@@ -186,6 +229,19 @@ struct PencilView: View {
         return UIEdgeInsets(top: topMargin, left: leftMargin, bottom: bottomMargin, right: rightMargin)
     }
     
+    func findMinInsets(margins: UIEdgeInsets) -> (key: String, value: CGFloat) {
+        let insetsDict: [String: CGFloat] = [
+            "top": margins.top,
+            "left": margins.left,
+            "bottom": margins.bottom,
+            "right": margins.right
+        ]
+        
+        if let minPair = insetsDict.min(by: { $0.value < $1.value }) {
+            return minPair
+        }
+        return ("none", 0)
+    }
 }
 
 // ツールパレットのビュー
