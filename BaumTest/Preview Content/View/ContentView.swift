@@ -30,7 +30,7 @@ struct ContentView: View {
                         .cornerRadius(30)
                 }
                 .fullScreenCover(isPresented: $isPresented) {
-                    PencilView()
+                    PencilView(isPresented: $isPresented)
                 }
             }
         }
