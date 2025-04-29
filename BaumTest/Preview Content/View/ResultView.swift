@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ResultView: View {
-    @Binding var savedImage: UIImage
-    @Binding var treeModel: TreeModel
+    @Bindable var treeModel: TreeModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -28,13 +27,14 @@ struct ResultView: View {
                     }
                 }
                 
-                Image(uiImage: savedImage)
+                Image(uiImage: treeModel.savedImage)
                     .resizable()
                     .scaledToFit()
                     .border(Color.black, width: 1)
                 
                 Text("用紙のサイズ\(treeModel.sizeType)")
                 Text("用紙の位置\(treeModel.positionType)")
+                Text("陰影の有無: \(treeModel.hasShading ? "あり" : "なし")")
 
             }
             .padding()

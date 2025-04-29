@@ -13,8 +13,6 @@ struct PencilView: View {
     @State private var selectedColor: UIColor = .black
     @State private var selectedToolType: ToolType = .pencil
     @State private var isFullyContained: Bool = false
-    @Binding var isPresented: Bool
-    @ObservedObject var treeModel = TreeModel()
     
     enum ToolType {
         case pencil, eraser, paper
@@ -36,43 +34,9 @@ struct PencilView: View {
                 HStack {
                     DiagnosisButton(canvasView: $canvasView, status: .loding)
                     
-//                    Button(action: {
-//                        saveDrawing()
-//                    }) {
-//                        
-//                        ZStack {
-//                            Text("Diagnosis 50% up")
-//                                .font(.headline)
-//                                .frame(maxWidth: .infinity)
-//                            Image(systemName: "lock.fill")
-//                                .foregroundColor(.black)
-//                                .offset(x: 45, y: 20)
-//                        }
-//                    }
-//                    .padding()
-//                    .shadow(radius: 4)
-//                    .foregroundColor(.black)
-//                    .background(LinearGradient(colors: [.yellow, .pink], startPoint: .topLeading, endPoint: .bottomTrailing))
-//                    .cornerRadius(8)
-//                    
-//                    Button(action: {
-//                        saveDrawing()
-//                    }) {
-//                        ZStack {
-//                            Text("Diagnosis 100% up")
-//                                .font(.headline)
-//                                .frame(maxWidth: .infinity)
-//                            Image(systemName: "lock.fill")
-//                                .foregroundColor(.black)
-//                                .offset(x: 45, y: 20)
-//                        }
-//                    }
-//                    .padding()
-//                    .shadow(radius: 4)
-//                    .foregroundColor(.black)
-//                    .background(LinearGradient(colors: [.blue, .pink], startPoint: .topLeading, endPoint: .bottomTrailing))
-//                    .cornerRadius(8)
+                    Diagnosis50Button()
                     
+                    Diagnosis100Button()
                 }
 
             }
@@ -95,5 +59,5 @@ struct PencilView: View {
 
 
 #Preview {
-    PencilView(isPresented: .constant(true))
+    PencilView()
 }

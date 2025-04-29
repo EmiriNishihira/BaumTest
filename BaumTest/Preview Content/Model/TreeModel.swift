@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-class TreeModel: ObservableObject {
-    @Published var sizeType: SizeType = .small
-    @Published var positionType: PositionType = .top
+@Observable
+class TreeModel {
+    var sizeType: SizeType = .small
+    var positionType: PositionType = .top
+    var hasShading: Bool = false
+    var savedImage: UIImage = UIImage()
 }

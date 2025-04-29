@@ -9,7 +9,24 @@ import SwiftUI
 
 struct Diagnosis50Button: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button(action: {
+//            saveDrawing()
+        }) {
+            
+            ZStack {
+                Text("Diagnosis 50% up")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                Image(systemName: "star.fill")
+                    .foregroundColor(.black)
+                    .offset(x: 45, y: 20)
+            }
+        }
+        .padding()
+        .shadow(radius: 4)
+        .foregroundColor(.black)
+        .background(LinearGradient(colors: [.yellow, .pink], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .cornerRadius(8)
     }
 }
 

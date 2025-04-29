@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct BaumTestApp: App {
+    @AppStorage("isExisting") private var isExisting: Bool = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isExisting {
+                PencilView()
+            } else {
+                StartView()
+            }
         }
     }
 }

@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct StartView: View {
     @State private var isPresented = false
+    @AppStorage("isExisting") private var isExisting: Bool = false
+    
     var body: some View {
-        
         ZStack {
             Color.black
             VStack {
@@ -20,6 +21,7 @@ struct ContentView: View {
                     .fontWeight(.bold)
                 Button {
                     isPresented = true
+                    isExisting = true
                 } label: {
                     Text("Start")
                         .foregroundStyle(.black)
@@ -30,7 +32,7 @@ struct ContentView: View {
                         .cornerRadius(30)
                 }
                 .fullScreenCover(isPresented: $isPresented) {
-                    PencilView(isPresented: $isPresented)
+                    PencilView()
                 }
             }
         }
@@ -41,5 +43,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    StartView()
 }
