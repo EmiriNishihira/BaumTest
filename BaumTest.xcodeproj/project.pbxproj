@@ -10,9 +10,22 @@
 		508463212CABF6D5006A91AB /* BaumTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaumTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		ADE9B3272DC0E7AB001CA699 /* Exceptions for "BaumTest" folder in "BaumTest" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 508463202CABF6D5006A91AB /* BaumTest */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		508463232CABF6D5006A91AB /* BaumTest */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ADE9B3272DC0E7AB001CA699 /* Exceptions for "BaumTest" folder in "BaumTest" target */,
+			);
 			path = BaumTest;
 			sourceTree = "<group>";
 		};
@@ -255,6 +268,8 @@
 				DEVELOPMENT_TEAM = B9WD868NNN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BaumTest/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "描画を保存するために写真アルバムへのアクセスが必要です。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +299,8 @@
 				DEVELOPMENT_TEAM = B9WD868NNN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BaumTest/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "描画を保存するために写真アルバムへのアクセスが必要です。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
